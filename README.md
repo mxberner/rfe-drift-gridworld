@@ -62,3 +62,70 @@ However, most existing RFE frameworks assume a static environment. In realistic 
    - Downstream sample efficiency.
    - Performance drop when drift occurs.
    - Representation similarity / drift across environments.
+
+---
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Usage
+
+```bash
+python run.py
+```
+
+This runs the complete pipeline:
+1. Reward-free exploration
+2. Representation training (fixed and drift-aware encoders)
+3. Downstream RL training
+4. Evaluation with all metrics
+
+Results are saved to `results/final_results.png`
+
+---
+
+## Project Structure
+
+```
+rfe-drift-gridworld/
+├── rfe_drift/          # Core implementation
+│   ├── env/            # DriftGridWorld environment
+│   ├── exploration/    # UCRL-RFE algorithm
+│   ├── representations/# State encoders
+│   ├── rl/             # RL agents (Q-Learning, DQN)
+│   └── utils/          # Metrics, rewards, visualization
+├── run.py              # Main script
+├── requirements.txt    # Dependencies
+└── README.md           # This file
+```
+
+---
+
+## Metrics Tracked
+
+1. **State Coverage:** Fraction of state space explored during RFE
+2. **Sample Efficiency:** Learning speed in downstream tasks
+3. **Performance Drop:** Reward before vs after drift (key metric!)
+4. **Robustness:** How well agents adapt to environmental changes
+
+---
+
+## Configuration
+
+Edit the `CONFIG` dict in `run.py` to adjust parameters:
+
+```python
+CONFIG = {
+    "grid_size": 10,              # Grid dimensions
+    "drift_strength": 0.7,         # How much environment changes (0-1)
+    "drift_time": 200,             # When drift occurs (in steps)
+    "num_exploration_steps": 10000,# Reward-free exploration
+    "num_train_episodes": 300,     # Downstream RL training
+    "num_eval_episodes": 50,       # Evaluation episodes
+}
+```
